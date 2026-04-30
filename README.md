@@ -441,3 +441,105 @@ git commit -m "Step X completed"
 - les métriques sont visibles dans Prometheus,
 - les dashboards sont visibles dans Grafana,
 - l’ensemble est déployé sur Kubernetes.
+
+---
+
+
+# Architechture: Modélisation de l’architecture logicielle
+
+Avant de finaliser l’implémentation, vous "devez" produire un **schéma d’architecture logicielle** représentant les composants de la solution et leurs interactions.
+
+Ce schéma peut être réalisé avec l’outil de votre choix :
+
+- **draw.io**
+- **Lucidchart**
+- **Excalidraw**
+- ou tout autre outil équivalent
+
+Le diagramme devra être exporté et ajouté au dépôt GitHub :
+
+- soit en image (`architecture.png`)
+- soit en PDF (`architecture.pdf`)
+
+Le fichier devra être placé dans un dossier :
+
+```bash
+docs/architecture.png
+```
+
+---
+
+## Objectif du schéma
+
+Le diagramme doit permettre de visualiser :
+
+- les microservices développés,
+- les communications entre services,
+- les composants de monitoring,
+- l’infrastructure Kubernetes.
+
+---
+
+## Éléments obligatoires à représenter
+
+Votre schéma doit inclure au minimum :
+
+### Services applicatifs
+
+- `party-service`
+- `player-service`
+- `stats-service`
+
+### Infrastructure
+
+- `eureka-server`
+- `prometheus`
+- `grafana`
+
+### Orchestration
+
+- `kubernetes`
+
+---
+
+## Relations attendues
+
+Le schéma doit montrer :
+
+- que les microservices s’enregistrent dans **Eureka**
+- que **Stats Service** appelle **Party Service** et **Player Service**
+- que **Prometheus** collecte les métriques des microservices
+- que **Grafana** exploite les données de **Prometheus**
+- que tous les composants sont déployés sur **Kubernetes**
+
+---
+
+## Exemple simplifié attendu
+
+```text
+                    +-------------------+
+                    |      Grafana      |
+                    +---------+---------+
+                              |
+                              v
+                    +-------------------+
+                    |    Prometheus     |
+                    +----+----+----+----+
+                         |    |    |
+                         v    v    v
+                  +------+ +------+ +------+
+                  |Party | |Player| |Stats |
+                  |Service| |Service| |Service|
+                  +---+---+ +---+---+ +---+---+
+                      |         |         |
+                      +---------+---------+
+                                |
+                                v
+                         +-------------+
+                         |   Eureka    |
+                         +-------------+
+
+             Tous les composants sont déployés sur Kubernetes
+```
+
+---
